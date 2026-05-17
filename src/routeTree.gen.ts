@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TeamRouteImport } from './routes/team'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
@@ -21,17 +20,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminMembersRouteImport } from './routes/admin.members'
-import { Route as AdminGalleryRouteImport } from './routes/admin.gallery'
-import { Route as AdminEventsRouteImport } from './routes/admin.events'
 
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
   path: '/team',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -84,16 +76,6 @@ const AdminMembersRoute = AdminMembersRouteImport.update({
   path: '/members',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminGalleryRoute = AdminGalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminEventsRoute = AdminEventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => AdminRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,10 +85,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
-  '/admin/events': typeof AdminEventsRoute
-  '/admin/gallery': typeof AdminGalleryRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
@@ -118,10 +97,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
-  '/admin/events': typeof AdminEventsRoute
-  '/admin/gallery': typeof AdminGalleryRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin': typeof AdminIndexRoute
@@ -135,10 +111,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
-  '/admin/events': typeof AdminEventsRoute
-  '/admin/gallery': typeof AdminGalleryRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
@@ -153,10 +126,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/login'
-    | '/sitemap.xml'
     | '/team'
-    | '/admin/events'
-    | '/admin/gallery'
     | '/admin/members'
     | '/admin/settings'
     | '/admin/'
@@ -168,10 +138,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/login'
-    | '/sitemap.xml'
     | '/team'
-    | '/admin/events'
-    | '/admin/gallery'
     | '/admin/members'
     | '/admin/settings'
     | '/admin'
@@ -184,10 +151,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/login'
-    | '/sitemap.xml'
     | '/team'
-    | '/admin/events'
-    | '/admin/gallery'
     | '/admin/members'
     | '/admin/settings'
     | '/admin/'
@@ -201,7 +165,6 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
   LoginRoute: typeof LoginRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
 }
 
@@ -212,13 +175,6 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/team'
       preLoaderRoute: typeof TeamRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -291,34 +247,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMembersRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/gallery': {
-      id: '/admin/gallery'
-      path: '/gallery'
-      fullPath: '/admin/gallery'
-      preLoaderRoute: typeof AdminGalleryRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/events': {
-      id: '/admin/events'
-      path: '/events'
-      fullPath: '/admin/events'
-      preLoaderRoute: typeof AdminEventsRouteImport
-      parentRoute: typeof AdminRoute
-    }
   }
 }
 
 interface AdminRouteChildren {
-  AdminEventsRoute: typeof AdminEventsRoute
-  AdminGalleryRoute: typeof AdminGalleryRoute
   AdminMembersRoute: typeof AdminMembersRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminEventsRoute: AdminEventsRoute,
-  AdminGalleryRoute: AdminGalleryRoute,
   AdminMembersRoute: AdminMembersRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -334,9 +272,18 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
   LoginRoute: LoginRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeamRoute: TeamRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
