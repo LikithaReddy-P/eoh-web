@@ -3,9 +3,6 @@ type = "javascript"
 account_id = ""
 workers_dev = true
 
-[env.production]
-name = "eoh-web-production"
-
 [build]
 command = "npm run build"
 cwd = "./"
@@ -13,5 +10,11 @@ cwd = "./"
 [build.upload]
 main = "./functions/_middleware.ts"
 
+[env.production]
+name = "eoh-web-production"
+
 [compatibility_flags]
+nodejs_compat = true
+
+[env.production.compatibility_flags]
 nodejs_compat = true
