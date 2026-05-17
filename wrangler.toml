@@ -1,24 +1,17 @@
-# Cloudflare Pages Configuration
-# Save as wrangler.toml or use Cloudflare Dashboard
-
-name = "eoh-hyd-website"
+name = "eoh-web"
 type = "javascript"
-account_id = ""  # Add your Cloudflare account ID
-project_name = "eoh-hyd-website"
-
-# Build configuration
-build = { command = "npm run build", cwd = "./", root_dir = "dist" }
-
-# Environment variables can be set in Cloudflare Dashboard
-# or in the [env.production] section below
+account_id = ""
+workers_dev = true
 
 [env.production]
-vars = { ENVIRONMENT = "production" }
+name = "eoh-web-production"
 
-[env.staging]
-vars = { ENVIRONMENT = "staging" }
+[build]
+command = "npm run build"
+cwd = "./"
 
-# Routes configuration (if needed)
-# routes = [
-#   { pattern = "example.com", zone_name = "example.com" }
-# ]
+[build.upload]
+main = "./functions/_middleware.ts"
+
+[compatibility_flags]
+nodejs_compat = true
